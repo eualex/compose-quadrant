@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Compose Quadrant</string>
+    <string name="box_1_title">Text composable</string>
+    <string name="box_1_content">Displays text and follows the recommended Material Design guidelines.</string>
+    <string name="box_2_title">Image composable</string>
+    <string name="box_2_content">Creates a composable that lays out and draws a given Painter class object.</string>
+    <string name="box_3_title">Row composable</string>
+    <string name="box_3_content">A layout composable that places its children in a horizontal sequence.</string>
+    <string name="box_4_title">Column composable</string>
+    <string name="box_4_content">A layout composable that places its children in a vertical sequence.</string>
+</resources>
