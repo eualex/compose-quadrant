@@ -4,24 +4,18 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -69,21 +63,29 @@ class MainActivity : ComponentActivity() {
         setContent {
             ComposeQuadrantTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Column(
-                        modifier = Modifier.padding(innerPadding)
-                    ) {
-                        QUADRANT_ITEM_LIST.forEach { rowItems ->
-                            Row {
-                               rowItems.forEach { item ->
-                                   Quadrant(
-                                       title = stringResource(item.title),
-                                       description = stringResource(item.description),
-                                       background = colorResource(item.background)
-                                   )
-                               }
-                            }
-                        }
-                    }
+                    QuadrantApp(Modifier.padding(innerPadding))
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun QuadrantApp(
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier
+    ) {
+        QUADRANT_ITEM_LIST.forEach { rowItems ->
+            Row(Modifier.weight(1f)) {
+                rowItems.forEach { item ->
+                    Quadrant(
+                        title = stringResource(item.title),
+                        description = stringResource(item.description),
+                        background = colorResource(item.background),
+                        modifier = Modifier.weight(1f)
+                    )
                 }
             }
         }
@@ -97,35 +99,24 @@ fun Quadrant(
     background: Color,
     modifier: Modifier = Modifier
 ) {
-    val configuration = LocalConfiguration.current
-    val screenWidth = configuration.screenWidthDp.dp
-    val screenHeight = configuration.screenHeightDp.dp
-    val containerHeight = screenHeight / 2
-    val containerWidth = screenWidth / 2
-
-    Surface(
-        color = background,
+    Column(
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
-            .width(containerWidth)
-            .height(containerHeight)
+            .fillMaxSize()
+            .background(background)
+            .padding(16.dp)
     ) {
-        Column(
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally,
+        Text(
+            text = title,
+            fontWeight = FontWeight.Bold,
             modifier = Modifier
-                .padding(16.dp),
-        ) {
-            Text(
-                text = title,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier
-                    .padding(bottom = 16.dp)
-            )
-            Text(
-                text = description,
-                textAlign = TextAlign.Justify
-            )
-        }
+                .padding(bottom = 16.dp)
+        )
+        Text(
+            text = description,
+            textAlign = TextAlign.Justify
+        )
     }
 }
 
@@ -133,17 +124,6 @@ fun Quadrant(
 @Composable
 fun GreetingPreview() {
     ComposeQuadrantTheme {
-        Row {
-            Quadrant(
-                title = stringResource(R.string.box_1_title),
-                description = stringResource(id = R.string.box_1_content),
-                background = colorResource(id = R.color.purple_0)
-            )
-            Quadrant(
-                title = stringResource(R.string.box_2_title),
-                description = stringResource(id = R.string.box_2_content),
-                background = colorResource(id = R.color.purple_50)
-            )
-        }
+        QuadrantApp()
     }
 }
